@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caterpillar Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #game-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #controls {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        #game-over h2 {
+            margin: 0;
+            color: #e74c3c;
+        }
+        #game-over button {
+            margin-top: 10px;
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
+        <div id="controls">
+            <button id="up" onclick="handleKeyPress('ArrowUp')">↑</button>
+            <div>
+                <button id="left" onclick="handleKeyPress('ArrowLeft')">←</button>
+                <button id="down" onclick="handleKeyPress('ArrowDown')">↓</button>
+                <button id="right" onclick="handleKeyPress('ArrowRight')">→</button>
+            </div>
+        </div>
+        <div id="score">Score: 0</div>
+        <div id="game-over">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+    <script src="caterpillar.js"></script>
+</body>
+</html>
