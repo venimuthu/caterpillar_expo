@@ -1,97 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Caterpillar Game</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-        #game-container {
-            position: relative;
-            width: 600px;
-            height: 600px;
-            background-color: white;
-            border: 2px solid #333;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        #controls {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        button {
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
-            color: #333;
-        }
-        #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            background: rgba(255,255,255,0.9);
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-        }
-        #game-over h2 {
-            margin: 0;
-            color: #e74c3c;
-        }
-        #game-over button {
-            margin-top: 10px;
-            background-color: #3498db;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Play the classic Caterpillar Game - Navigate through obstacles and grow your caterpillar!">
+    <title>Caterpillar Game - Classic Arcade Fun</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="game-container">
-        <canvas id="gameCanvas" width="600" height="600"></canvas>
-        <div id="controls">
-            <button id="up" onclick="handleKeyPress('ArrowUp')">↑</button>
-            <div>
-                <button id="left" onclick="handleKeyPress('ArrowLeft')">←</button>
-                <button id="down" onclick="handleKeyPress('ArrowDown')">↓</button>
-                <button id="right" onclick="handleKeyPress('ArrowRight')">→</button>
+    <div class="game-container">
+        <div id="game-header">
+            <div id="score-container">
+                <span>Score: <span id="score">0</span></span>
+                <span>High Score: <span id="high-score">0</span></span>
+            </div>
+            <div id="level-display">Level: <span id="level">1</span></div>
+        </div>
+        
+        <canvas id="gameCanvas" width="600" height="600" tabindex="0"></canvas>
+        
+        <!-- Game Screens -->
+        <div id="menu" class="screen active">
+            <h1>Caterpillar Game</h1>
+            <div class="menu-option" data-option="play">Play Game</div>
+            <div class="menu-option" data-option="levels">Level Select</div>
+            <div class="menu-option" data-option="shop">Shop</div>
+            <div class="menu-option" data-option="instructions">How to Play</div>
+        </div>
+        
+        <div id="level-select" class="screen">
+            <h2>Select Level</h2>
+            <div id="level-options">
+                <!-- Levels will be added by JavaScript -->
+            </div>
+            <button class="back-button">Back to Menu</button>
+        </div>
+        
+        <div id="shop" class="screen">
+            <h2>Shop</h2>
+            <div class="coins-display">Coins: <span id="coins">0</span></div>
+            <div id="skin-options">
+                <!-- Skins will be added by JavaScript -->
+            </div>
+            <button class="back-button">Back to Menu</button>
+        </div>
+        
+        <div id="instructions" class="screen">
+            <h2>How to Play</h2>
+            <div class="instructions-content">
+                <div class="instruction-item">
+                    <span class="key">↑↓←→</span>
+                    <span>Move the caterpillar</span>
+                </div>
+                <div class="instruction-item">
+                    <span class="key">P</span>
+                    <span>Pause game</span>
+                </div>
+                <p>Eat the food to grow longer and earn points.</p>
+                <p>Avoid hitting the walls, obstacles, and yourself.</p>
+                <p>Complete levels to unlock new challenges!</p>
+            </div>
+            <button class="back-button">Back to Menu</button>
+        </div>
+        
+        <div id="game-over" class="screen">
+            <h2>Game Over</h2>
+            <div class="result-container">
+                <p>Your Score: <span id="final-score">0</span></p>
+                <p>High Score: <span id="final-high-score">0</span></p>
+            </div>
+            <button class="menu-option" id="play-again">Play Again</button>
+            <button class="back-button">Back to Menu</button>
+        </div>
+        
+        <div id="pause" class="screen">
+            <h2>Paused</h2>
+            <button class="menu-option" id="resume">Resume</button>
+            <button class="back-button">Back to Menu</button>
+        </div>
+        
+        <div id="achievement" class="achievement-notification hidden">
+            <div class="achievement-content"></div>
+        </div>
+        
+        <div id="mobile-controls" class="mobile-only">
+            <div class="dpad">
+                <button id="up" class="control-btn">↑</button>
+                <div class="dpad-row">
+                    <button id="left" class="control-btn">←</button>
+                    <div class="dpad-center"></div>
+                    <button id="right" class="control-btn">→</button>
+                </div>
+                <button id="down" class="control-btn">↓</button>
+            </div>
+            <div class="action-buttons">
+                <button id="pause-btn" class="action-btn">⏸️</button>
             </div>
         </div>
-        <div id="score">Score: 0</div>
-        <div id="game-over">
-            <h2>Game Over!</h2>
-            <p>Final Score: <span id="final-score">0</span></p>
-            <button onclick="restartGame()">Play Again</button>
-        </div>
     </div>
-    <script src="caterpillar.js"></script>
+    
+    <script src="game.js"></script>
 </body>
 </html>
